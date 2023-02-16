@@ -3,7 +3,24 @@ from pprint import pformat
 import streamlit as st
 
 
-def bubble(message, role, src):
+class bubble:
+    @staticmethod
+    def user(
+        message,
+        src="https://jeremyafisher.com/images/prof.jpg",
+    ):
+        return bubble_(message, "user", src)
+
+    @staticmethod
+    def bot(message):
+        return bubble_(
+            message,
+            "bot",
+            src="https://jeremyafisher.com/images/dm.jpg",
+        )
+
+
+def bubble_(message, role, src):
     assert role in ["user", "bot"]
     avatar = f'<img class="avatar" src="{src}"/>'
     body = f"""
