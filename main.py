@@ -43,6 +43,8 @@ st.sidebar.markdown("**Quests**:\n" + "\n".join(f"- {quest}" for quest in ss.que
 for entity, message in ss.messages:
     if entity == "image":
         st.image(message)
+    elif entity == "caption":
+        st.caption(message)
     elif entity == "bot":
         bubble.bot(message)
     else:
@@ -81,6 +83,7 @@ else:
             illustration_caption = generate_illustration_caption(ai_result)
             im = get_image(illustration_caption, url)
             ss.messages.append(("image", im))
+            ss.messages.append(("caption", illustration_caption))
         st.session_state["messages"].append(("bot", ai_result))
         ss.turn_manager.reset()
         st.experimental_rerun()
