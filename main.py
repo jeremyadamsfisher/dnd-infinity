@@ -1,6 +1,10 @@
+import os
+
 import streamlit as st
 
+from api.stable_diffusion import get_image
 from chains.dm import DungeonMaster
+from chains.illustrate import generate_illustration_caption
 from chains.quest_name import generate_quest_name
 from components.bubble import bubble
 from game.avatar import avatars
@@ -37,7 +41,9 @@ if st.checkbox("Show prompt"):
 st.sidebar.markdown("**Quests**:\n" + "\n".join(f"- {quest}" for quest in ss.quests))
 
 for entity, message in ss.messages:
-    if entity == "bot":
+    if entity == "image":
+        st.image(message)
+    elif entity == "bot":
         bubble.bot(message)
     else:
         bubble.user(message, src=avatars[entity])
@@ -50,7 +56,7 @@ if player_or_players := ss.turn_manager.who_can_take_a_turn():
 
         def submit():
             if ss.player_input:
-                st.session_state["messages"].append((ss.player, ss.player_input))
+                ss.messages.append((ss.player, ss.player_input))
                 ss.turn_manager.take_turn(ss.player, ss.player_input)
 
         def skip_turn():
@@ -71,6 +77,10 @@ else:
             quest = generate_quest_name(ai_result)
             ss.quests.append(quest)
             ss.dm.quests = ss.quests
+        if url := os.environ.get("STABLE_DIFFUSION_URL", None):
+            illustration_caption = generate_illustration_caption(ai_result)
+            im = get_image(illustration_caption, url)
+            ss.messages.append(("image", im))
         st.session_state["messages"].append(("bot", ai_result))
         ss.turn_manager.reset()
         st.experimental_rerun()
