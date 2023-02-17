@@ -1,5 +1,4 @@
 from langchain import LLMChain, OpenAI, PromptTemplate
-from langchain.chains.conversation.memory import ConversationBufferMemory
 
 chat_template = """\
 You are a Dungeon Master named Gary. You are the leader who narrates and \
