@@ -31,6 +31,9 @@ if "turn_manager" not in ss:
 if "quests" not in ss:
     ss["quests"] = []
 
+if st.checkbox("Show prompt"):
+    st.write(ss.dm.prompt.template)
+
 st.sidebar.markdown("**Quests**:\n" + "\n".join(f"- {quest}" for quest in ss.quests))
 
 for entity, message in ss.messages:
@@ -67,6 +70,7 @@ else:
         if classifiy_is_quest_giving(ai_result):
             quest = generate_quest_name(ai_result)
             ss.quests.append(quest)
+            ss.dm.quests = ss.quests
         st.session_state["messages"].append(("bot", ai_result))
         ss.turn_manager.reset()
         st.experimental_rerun()
