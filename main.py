@@ -40,8 +40,9 @@ for entity, message in ss.messages:
         bubble.user(message, src=avatars[entity])
 
 if player_or_players := ss.turn_manager.who_can_take_a_turn():
+    player = st.selectbox("Player", player_or_players, key="player")
+    st.image(avatars[player], width=100)
     with st.form(key="input", clear_on_submit=True):
-        player = st.selectbox("Player", player_or_players, key="player")
         input_ = st.text_area("Do anything.", value="", key="player_input")
 
         def submit():
@@ -52,10 +53,10 @@ if player_or_players := ss.turn_manager.who_can_take_a_turn():
         def skip_turn():
             ss.turn_manager.take_turn(ss.player)
 
-        col1, col2, *_ = st.columns(6)
-        with col1:
+        a, b, *_ = st.columns(6)
+        with a:
             st.form_submit_button(label="Take turn 🧙‍♂️", on_click=submit)
-        with col2:
+        with b:
             st.form_submit_button(label="Skip turn 😪", on_click=skip_turn)
 
 else:
@@ -69,16 +70,3 @@ else:
         st.session_state["messages"].append(("bot", ai_result))
         ss.turn_manager.reset()
         st.experimental_rerun()
-
-
-# if st.sidebar.checkbox("Admin"):
-#     if st.sidebar.button("Export"):
-#         import csv
-#         import datetime
-
-#         now = datetime.datetime.now()
-#         with open(f"./logs-{now}.csv", "w") as f:
-#             csv_writer = csv.DictWriter(f, fieldnames=["entity", "message"])
-#             csv_writer.writeheader()
-#             for entity, message in ss.messages:
-#                 csv_writer.writerow({"entity": entity, "message": message})

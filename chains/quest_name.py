@@ -4,8 +4,7 @@ prompt = """My dungeon master just said the following:
 
 > {description}
 
-What is the good name for the quest that this description describes? \
-Do not explain yourself."""
+What is a good name for this quest? Do not explain yourself."""
 
 
 def generate_quest_name(dialog_turn):
