@@ -16,7 +16,7 @@ begins in the town of Phandelver.
 
 The other players in this game are a crude and rude Orc Fighter named Kale Talc, \
 and a lascivious and haughty Human Cleric named Spud. They have been summoned to \
-a tavern by a mysterious patron named Claro. They should encounter difficult \
+a tavern by a mysterious patron named Steve. They should encounter difficult \
 moral problems, basic combat, and quirky side characters during the game.
 
 {quests}

@@ -2,5 +2,7 @@ langchain==0.0.87
 openai==0.26.5
 streamlit-chat==0.0.2.1
 setfit
-http://download.pytorch.org/whl/cpu/torch-1.9.0-cp39-none-macosx_10_9_x86_64.whl
+# http://download.pytorch.org/whl/cpu/torch-1.9.0-cp39-none-macosx_10_9_x86_64.whl
+torch
 requests
+baseten

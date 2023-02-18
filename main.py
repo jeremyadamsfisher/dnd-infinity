@@ -17,10 +17,8 @@ st.title("Dungeons and Dragons ♾️")
 
 initial_prompt = """\
 You are in a tavern. You see a gathering of shady characters clustered \
-around a few tables, sipping ales and glancing nervously at the entrance \
-with anticipation. You have been summoned to this tavern by a mysterious \
-patron named Steve. Steve is sitting alone at a corner table near the \
-hearth, wearing a voluminous cloak with a hood pulled up. He motions for \
+around a few tables, sipping ales. You have been summoned here by a \
+mysterious man named Steve. He is sitting alone at a corner and motions for \
 you to join him. How do you proceed?"""
 
 if "messages" not in ss:
@@ -35,17 +33,27 @@ if "turn_manager" not in ss:
 if "quests" not in ss:
     ss["quests"] = []
 
+if "visualization" not in ss:
+    ss["visualization"] = (
+        "https://www.jeremyafisher.com/images/tavern.png",
+        "A boisterious, shady tavern.",
+    )
+
 if st.checkbox("Show prompt"):
     st.write(ss.dm.prompt.template)
 
-st.sidebar.markdown("**Quests**:\n" + "\n".join(f"- {quest}" for quest in ss.quests))
+im, caption = ss.visualization
+st.sidebar.image(im, caption=caption)
+
+if ss.quests:
+    st.sidebar.markdown(
+        "**Quests**:\n" + "\n".join(f"- {quest}" for quest in ss.quests)
+    )
+else:
+    st.sidebar.markdown("**Quest journal empty**")
 
 for entity, message in ss.messages:
-    if entity == "image":
-        st.image(message)
-    elif entity == "caption":
-        st.caption(message)
-    elif entity == "bot":
+    if entity == "bot":
         bubble.bot(message)
     else:
         bubble.user(message, src=avatars[entity])
@@ -80,10 +88,12 @@ else:
             ss.quests.append(quest)
             ss.dm.quests = ss.quests
         if url := os.environ.get("STABLE_DIFFUSION_URL", None):
-            illustration_caption = generate_illustration_caption(ai_result)
-            im = get_image(illustration_caption, url)
-            ss.messages.append(("image", im))
-            ss.messages.append(("caption", illustration_caption))
-        st.session_state["messages"].append(("bot", ai_result))
+            # if random.random() > 0.3:  # sometimes skip
+            if True:
+                illustration_caption = generate_illustration_caption(ai_result)
+                prompt = f"fantasy painting of {illustration_caption}, dungeons and dragons, magic the gathering, epic oil painting, trending on artstation by greg rutkowski"
+                im = get_image(prompt, url)
+                ss.visualization = (im, illustration_caption)
+        ss.messages.append(("bot", ai_result))
         ss.turn_manager.reset()
         st.experimental_rerun()

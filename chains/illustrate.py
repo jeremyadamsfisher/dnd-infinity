@@ -22,11 +22,10 @@ def generate_illustration_caption(dialog_turn):
         prompt=chat_prompt,
         verbose=True,
     )
-    pred = (
+    return (
         chain.predict(description=dialog_turn)
         .strip()
         .replace('"', "")
         .replace(".", "")
         .title()
     )
-    return f"fantasy painting of {pred}, dnd, dungeons and dragons, vibrant color, oil painting, trending on artstation by justin gerard and greg rutkowski"

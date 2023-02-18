@@ -4,7 +4,7 @@ from setfit import SetFitModel
 
 @st.cache_data
 def get_model():
-    weights_fp = "/Users/jeremyfisher/Code/dndnd/models/classifiers/setfil_weights"
+    weights_fp = "models/classifiers/setfil_weights"
     return SetFitModel.from_pretrained(weights_fp)
 
 
